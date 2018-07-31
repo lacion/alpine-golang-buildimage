@@ -2,7 +2,7 @@ alpine-golang-buildimage
 ========================
 
 This repository contains the sources for the following [docker](https://docker.io) base images:
-- [`lacion/alpine-golang-buildimage`](/base)
+- [`lacion/alpine-golang-buildimage`]
 
 ## Usage
 
