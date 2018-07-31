@@ -10,7 +10,6 @@ LABEL repo="https://github.com/lacion/alpine-golang-buildimage"
 RUN apk add --no-cache --update curl \
     grep \
     sed \
-    jq \
     ca-certificates \
     git \
 	make
