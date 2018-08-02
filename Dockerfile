@@ -12,7 +12,11 @@ RUN apk add --no-cache --update curl \
     sed \
     ca-certificates \
     git \
-	make
+	make \
+	gcc \
+	musl-dev \
+	bash \
+	openssl
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -26,10 +30,6 @@ RUN if [ "$VERSION" = "1.9.7" ] ; then mkdir -p /go-alpine-patches && cp /patche
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
-		bash \
-		gcc \
-		musl-dev \
-		openssl \
 		go \
 	; \
 	export \
