@@ -1,6 +1,6 @@
 .PHONY: default help build tag push
 
-IMAGE_NAME   := kitabisa/alpine-golang-buildimage
+IMAGE_NAME := kitabisa/alpine-golang-buildimage
 
 default: help
 
@@ -16,7 +16,10 @@ help:
 build:
 	./build.sh "$(IMAGE_NAME)"
 
-tag:  build
+semver:
+	./semver.sh
+
+tag:  build semver
 	./tag.sh $(IMAGE_NAME)
 
 push: tag
