@@ -1,13 +1,14 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
-ARG VERSION=1.10.3
-ARG CHECKSUM=567b1cc66c9704d1c019c50bef946272e911ec6baf244310f87f4e678be155f2
+ARG VERSION=1.12.4
+ARG CHECKSUM=4affc3e610cd8182c47abbc5b0c0e4e3c6a2b945b55aaa2ba952964ad9df1467
 
 LABEL golang_version="$VERSION"
-LABEL maintainer="luismmorales@gmail.com"
-LABEL repo="https://github.com/lacion/alpine-golang-buildimage"
+LABEL maintainer="engineer@kitabisa.com"
+LABEL repo="https://github.com/kitabisa/alpine-golang-buildimage"
 
-RUN apk add --no-cache --update curl \
+RUN apk add --no-cache --update \
+	curl \
     grep \
     sed \
     ca-certificates \
@@ -16,7 +17,8 @@ RUN apk add --no-cache --update curl \
 	gcc \
 	musl-dev \
 	bash \
-	openssl
+	openssl && \
+    rm -rf /var/cache/apk/*
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
