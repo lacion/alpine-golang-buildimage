@@ -16,10 +16,7 @@ help:
 build:
 	./build.sh "$(IMAGE_NAME)"
 
-semver:
-	./semver.sh
-
-tag:  build semver
+tag:  build
 	./tag.sh $(IMAGE_NAME)
 
 push: tag
