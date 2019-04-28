@@ -6,8 +6,8 @@ This repository contains the sources for the following [docker](https://www.dock
 
 ## Usage
 
-This Image is intedend to be used in multi stage docker builds and is not for final or production use you can find more info
-about multistage build in this [blog post](https://www.critiqus.com/post/multi-stage-docker-builds/)
+This Image is intended to be used in multi-stage docker builds and is not for final or production use you can find more info
+about multi-stage build in this [blog post](https://www.critiqus.com/post/multi-stage-docker-builds/)
 
 ```
 FROM kitabisa/alpine-golang-buildimage
