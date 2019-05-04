@@ -21,12 +21,14 @@ RUN apk add --no-cache --update \
     rm -rf /var/cache/apk/*
 
 RUN apk add --no-cache --update \
-	python \
-    py-pip \
     groff \
+	jq \
     less \
-    mailcap && \
-	pip install --upgrade awscli && \
+    mailcap \
+	python \
+    py-pip  && \
+	pip install --no-cache-dir --upgrade pip && \
+	pip install --no-cache-dir --upgrade awscli && \
 	apk -v --purge del py-pip && \
     rm -rf /var/cache/apk/*
 
