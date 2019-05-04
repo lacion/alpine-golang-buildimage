@@ -25,11 +25,10 @@ RUN apk add --no-cache --update \
 	jq \
     less \
     mailcap \
-	python \
-    py-pip  && \
-	pip install --no-cache-dir --upgrade pip && \
-	pip install --no-cache-dir --upgrade awscli && \
-	apk -v --purge del py-pip && \
+	python3 \
+    py3-pip  && \
+	pip3 install --no-cache-dir --upgrade awscli && \
+	apk -v --purge del py3-pip && \
     rm -rf /var/cache/apk/*
 
 # set up nsswitch.conf for Go's "netgo" implementation
