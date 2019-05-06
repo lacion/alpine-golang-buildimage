@@ -14,10 +14,10 @@ help:
 	@echo
 
 build:
-	./build.sh "$(IMAGE_NAME)"
+	./build.sh "${IMAGE_NAME}"
 
 tag:  build
-	./tag.sh $(IMAGE_NAME)
+	./tag.sh ${IMAGE_NAME}
 
 push: tag
-	./push.sh $(IMAGE_NAME)
+	./push.sh ${IMAGE_NAME}
