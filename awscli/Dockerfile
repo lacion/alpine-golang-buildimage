@@ -7,6 +7,7 @@ LABEL golang_version="$VERSION"
 LABEL maintainer="engineer@kitabisa.com"
 LABEL repo="https://github.com/kitabisa/alpine-golang-buildimage"
 
+ENV TZ=Asia/Jakarta
 RUN apk add --no-cache --update \
 	curl \
     grep \
@@ -17,7 +18,10 @@ RUN apk add --no-cache --update \
 	gcc \
 	musl-dev \
 	bash \
+	tzdata \
 	openssl && \
+	cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+	echo $TZ > /etc/timezone && \
     rm -rf /var/cache/apk/*
 
 RUN apk add --no-cache --update \
