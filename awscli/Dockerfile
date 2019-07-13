@@ -1,13 +1,22 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
-ARG VERSION=1.12.4
-ARG CHECKSUM=4affc3e610cd8182c47abbc5b0c0e4e3c6a2b945b55aaa2ba952964ad9df1467
+ARG VERSION=1.12.7
+ARG CHECKSUM=95e8447d6f04b8d6a62de1726defbb20ab203208ee167ed15f83d7978ce43b13
 
 LABEL golang_version="$VERSION"
 LABEL maintainer="engineer@kitabisa.com"
 LABEL repo="https://github.com/kitabisa/alpine-golang-buildimage"
 
-ENV TZ=Asia/Jakarta
+RUN apk add --no-cache --update \
+    groff \
+	jq \
+    less \
+    mailcap \
+	python3 \
+    py3-pip  && \
+	pip3 install --no-cache-dir --upgrade awscli && \
+	apk -v --purge del py3-pip
+
 RUN apk add --no-cache --update \
 	curl \
     grep \
@@ -20,20 +29,13 @@ RUN apk add --no-cache --update \
 	bash \
 	tzdata \
 	openssl && \
-	cp /usr/share/zoneinfo/$TZ /etc/localtime && \
-	echo $TZ > /etc/timezone && \
-    rm -rf /var/cache/apk/*
+	rm -rf /var/cache/apk/*
 
-RUN apk add --no-cache --update \
-    groff \
-	jq \
-    less \
-    mailcap \
-	python3 \
-    py3-pip  && \
-	pip3 install --no-cache-dir --upgrade awscli && \
-	apk -v --purge del py3-pip && \
-    rm -rf /var/cache/apk/*
+ENV TZ=Asia/Jakarta
+
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+	echo $TZ > /etc/timezone
+    
 
 # set up nsswitch.conf for Go's "netgo" implementation
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
@@ -90,4 +92,7 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 RUN go get -u github.com/golang/dep/cmd/dep
+
+ENV GO111MODULE=on
+
 WORKDIR $GOPATH
