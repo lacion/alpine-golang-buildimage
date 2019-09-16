@@ -1,7 +1,7 @@
-FROM alpine:3.8
+FROM alpine:3.10.2
 
-ARG VERSION=1.10.3
-ARG CHECKSUM=567b1cc66c9704d1c019c50bef946272e911ec6baf244310f87f4e678be155f2
+ARG VERSION=1.13
+ARG CHECKSUM=3fc0b8b6101d42efd7da1da3029c0a13f22079c0c37ef9730209d8ec665bf122
 
 LABEL golang_version="$VERSION"
 LABEL maintainer="luismmorales@gmail.com"
@@ -17,16 +17,6 @@ RUN apk add --no-cache --update curl \
 	musl-dev \
 	bash \
 	openssl
-
-# set up nsswitch.conf for Go's "netgo" implementation
-# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
-# - docker run --rm debian:stretch grep '^hosts:' /etc/nsswitch.conf
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
-
-# make-sure-R0-is-zero-before-main-on-ppc64le.patch: https://github.com/golang/go/commit/9aea0e89b6df032c29d0add8d69ba2c95f1106d9 (Go 1.9)
-COPY *.patch /patches/
-
-RUN if [ "$VERSION" = "1.9.7" ] ; then mkdir -p /go-alpine-patches && cp /patches/*.patch /go-alpine-patches/; else echo "no patch needed"; fi
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
@@ -56,13 +46,8 @@ RUN set -eux; \
 	rm go.tgz; \
 	\
 	cd /usr/local/go/src; \
-	for p in /go-alpine-patches/*.patch; do \
-		[ -f "$p" ] || continue; \
-		patch -p2 -i "$p"; \
-	done; \
 	./make.bash; \
 	\
-	rm -rf /go-alpine-patches; \
 	apk del .build-deps; \
 	\
 	export PATH="/usr/local/go/bin:$PATH"; \
